@@ -78,8 +78,7 @@ module Milia
         # validate that a tenant exists prior to a user creation
         before_create do |new_user|
           if Thread.current[:tenant_id].blank? ||
-              !Thread.current[:tenant_id].kind_of?(Integer) ||
-              Thread.current[:tenant_id].zero?
+              !Thread.current[:tenant_id].kind_of?(String)
 
             raise ::Milia::Control::InvalidTenantAccess, "no existing valid current tenant"
 
@@ -151,7 +150,7 @@ module Milia
         case tenant
           when Tenant then
             tenant_id = tenant.id
-          when Integer then
+          when String then
             tenant_id = tenant
           else
             raise ArgumentError, "invalid tenant object or id"
